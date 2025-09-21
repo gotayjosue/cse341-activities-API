@@ -1,0 +1,37 @@
+//Local host
+### Get all activities
+GET http://localhost:8080/activities
+
+### Get activity by ID
+GET http://localhost:8080/activities/68cf771dd9dceb1aa7a67b1a
+
+### Create a new activity
+POST http://localhost:8080/activities
+Content-Type: application/json
+
+{
+    "activity_name": "Home night",
+    "date": "2025-01-01",
+    "location": "Chapel",
+    "responsible": "Ethel Alvarez",
+    "time": "6 PM",
+    "organization": "Relief Society",
+    "completed": false
+}
+
+### Update a activity by ID
+PUT http://localhost:8080/activities/68cf928cf915ee648e3d7b66
+Content-Type: application/json
+
+{
+    "activity_name": "Home night",
+    "date": "2025-01-01",
+    "location": "Chapel",
+    "responsible": "Ethel Alvarez",
+    "time": "7 PM",
+    "organization": "forAll",
+    "completed": false
+}
+
+### Delete a activity by ID
+DELETE http://localhost:8080/activities/68cf928cf915ee648e3d7b66

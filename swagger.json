@@ -1,0 +1,179 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Activities API",
+    "version": "1.0.0",
+    "description": "API for managing activities (CRUD)."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local server"
+    },
+    {
+      "url": "https://your-render-app.onrender.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Home page",
+        "responses": {
+          "200": {
+            "description": "Welcome message"
+          }
+        }
+      }
+    },
+    "/activities": {
+      "get": {
+        "summary": "Get all activities",
+        "responses": {
+          "200": {
+            "description": "List of activities",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Activity" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new activity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Activity" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Activity created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Activity" }
+              }
+            }
+          },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/activities/{id}": {
+      "get": {
+        "summary": "Get activity by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Activity found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Activity" }
+              }
+            }
+          },
+          "404": { "description": "Activity not found" }
+        }
+      },
+      "put": {
+        "summary": "Update an activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Activity" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Activity updated" },
+          "404": { "description": "Activity not found" }
+        }
+      },
+      "delete": {
+        "summary": "Delete an activity",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Activity deleted" },
+          "404": { "description": "Activity not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Activity": {
+        "type": "object",
+        "properties": {
+          "activity_name": {
+            "type": "string",
+            "example": "Home night"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-12-10"
+          },
+          "location": {
+            "type": "string",
+            "example": "Chapel"
+          },
+          "responsible": {
+            "type": "string",
+            "example": "Ethel Alvarez"
+          },
+          "time": {
+            "type": "string",
+            "example": "5 PM"
+          },
+          "organization": {
+            "type": "string",
+            "example": "forAll"
+          },
+          "completed": {
+            "type": "boolean",
+            "example": false
+          }
+        },
+        "required": [
+          "activity_name",
+          "date",
+          "location",
+          "responsible",
+          "time",
+          "organization",
+          "completed"
+        ]
+      }
+    }
+  }
+}
