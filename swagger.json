@@ -7,11 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
-      "description": "Local server"
-    },
-    {
-      "url": "https://your-render-app.onrender.com",
+      "url": "https://cse341-activities-api.onrender.com",
       "description": "Production server"
     }
   ],
