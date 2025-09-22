@@ -22,6 +22,20 @@ validate.activityRules = [
 ];
 
 
+// Rules to add or update users
+validate.userRules = [
+    body('user_name')
+        .notEmpty().withMessage('Name is required')
+        .isLength({ min: 3, max: 50 }).withMessage('Name must be 3-50 characters'),
+    body('user_email')
+        .notEmpty().withMessage('Email is required')
+        .isEmail().withMessage('Must be on email format'),
+    body('user_password')
+        .notEmpty().withMessage('Password is required')
+        .isLength({min: 8, max: 12}).withMessage('Password must be 8-12 characters')
+];
+
+
 // Middleware for reviewing results
 validate.check = (req, res, next) => {
   const errors = validationResult(req);

@@ -23,6 +23,20 @@ async function getAllActivities(req, res) {
     }
 }
 
+// Get all users
+async function getAllUsers(req, res) {
+    const client = new MongoClient(process.env.MONGODB_URI);
+    try {
+        await client.connect();
+        const user = await client.db("CSE341").collection("users").find().toArray();
+        res.status(200).json(user);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    } finally {
+        await client.close();
+    }
+}
+
 
 // Get activity by ID
 async function getActivityById(req, res) {
@@ -35,6 +49,25 @@ async function getActivityById(req, res) {
             res.status(200).json(activity);
         } else {
             res.status(404).json({ message: "Activity not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    } finally {
+        await client.close();
+    }
+}
+
+// Get user by ID
+async function getUserById(req, res) {
+    const userId = new ObjectId(req.params.id);
+    const client = new MongoClient(process.env.MONGODB_URI);
+    try {
+        await client.connect();
+        const user = await client.db("CSE341").collection("users").findOne({ _id: userId });
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ message: "User not found" });
         }
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -68,6 +101,27 @@ async function createActivity(req, res) {
     }
 }
 
+//Create an user
+async function createUser(req, res) {
+    const user = {
+        user_name: req.body.user_name,
+        user_email: req.body.user_email,
+        user_password: req.body.user_password
+    };
+    const client = new MongoClient(process.env.MONGODB_URI);
+    try {
+        await client.connect();
+        const result = await client.db("CSE341").collection("users").insertOne(user);
+        if (result.insertedId) {
+            res.status(201).json({ _id: result.insertedId, ...user });
+        } else {
+            res.status(500).json(result.error || 'Some error occurred while creating the user.');
+        }
+    } finally {
+        await client.close();
+    }
+}
+
 //Update an activity
 async function updateActivity(req, res) {
     const activityId = new ObjectId(req.params.id);
@@ -84,6 +138,30 @@ async function updateActivity(req, res) {
             res.status(200).json(result.value);
         } else {
             res.status(404).json({ message: "activity not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    } finally {
+        await client.close();
+    }
+}
+
+//Update an user
+async function updateUser(req, res) {
+    const userId = new ObjectId(req.params.id);
+    const updatedUser = req.body;
+    const client = new MongoClient(process.env.MONGODB_URI);
+    try {
+        await client.connect();
+        const result = await client.db("CSE341").collection("users").findOneAndUpdate(
+            { _id: userId },
+            { $set: updatedUser },
+            { returnOriginal: false }
+        );
+        if (result.value) {
+            res.status(200).json(result.value);
+        } else {
+            res.status(404).json({ message: "User not found" });
         }
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -111,5 +189,34 @@ async function deleteActivity(req, res) {
     }
 }
 
+//Delete an user
+async function deleteUser(req, res) {
+    const userId = new ObjectId(req.params.id);
+    const client = new MongoClient(process.env.MONGODB_URI);
+    try {
+        await client.connect();
+        const result = await client.db("CSE341").collection("users").deleteOne({ _id: userId });
+        if (result.deletedCount > 0) {
+            res.status(204).send();
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    } finally {
+        await client.close();
+    }
+}
 
-module.exports = { homePage, getAllActivities, getActivityById, createActivity, updateActivity, deleteActivity }
+
+module.exports = { homePage, 
+    getAllActivities, 
+    getAllUsers,
+    getActivityById, 
+    getUserById,
+    createActivity, 
+    createUser, 
+    updateActivity, 
+    updateUser, 
+    deleteActivity, 
+    deleteUser }

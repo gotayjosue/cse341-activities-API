@@ -2,8 +2,14 @@
 ### Get all activities
 GET http://localhost:8080/activities
 
+### Get all users
+GET http://localhost:8080/users
+
 ### Get activity by ID
 GET http://localhost:8080/activities/68cf771dd9dceb1aa7a67b1a
+
+### Get user by ID
+GET http://localhost:8080/users/68d18cacaed62acf3e793f0a
 
 ### Create a new activity
 POST http://localhost:8080/activities
@@ -19,7 +25,17 @@ Content-Type: application/json
     "completed": false
 }
 
-### Update a activity by ID
+### Create a new user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+    "user_name": "Josue",
+    "user_email": "josue@gmail.com",
+    "user_password": "bible2025"
+}
+
+### Update an activity by ID
 PUT http://localhost:8080/activities/68cf928cf915ee648e3d7b66
 Content-Type: application/json
 
@@ -33,5 +49,18 @@ Content-Type: application/json
     "completed": false
 }
 
-### Delete a activity by ID
+### Update an user by ID
+PUT http://localhost:8080/users/68d18cacaed62acf3e793f0a
+Content-Type: application/json
+
+{
+    "user_name": "josue",
+    "user_email": "josue@gmail.com",
+    "user_password": "bible2026"
+}
+
+### Delete an activity by ID
 DELETE http://localhost:8080/activities/68cf928cf915ee648e3d7b66
+
+### Delete an user by ID
+DELETE http://localhost:8080/users/68d18cacaed62acf3e793f0a
